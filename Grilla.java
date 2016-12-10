@@ -237,6 +237,9 @@ public class Grilla {
 				pivote.setAbajo(null);
 				pivote = pivote.getDerecha();
 			}
+		}else if(pivote.getArriba()==null && pivote.getAbajo()==null){
+			
+			this.inicio = null;
 		}
 	}
 	
@@ -445,25 +448,31 @@ public class Grilla {
 		this.recuperarFila(nodoFila);
 	}
 
+	//Recorre filas y columnas y completa con el dato sugerido.
 	public void completarNumero(int dato){
 		
 		Nodo elEliminado = this.eliminarFilaColumna(dato);
 			
-		if(this.cantidadNodosVacios(this.inicio)==1){
+		if(this.inicio != null){
+			
+			if(this.cantidadNodosVacios(this.inicio)==1){
 				
-			Nodo pivote = this.inicio;
-			while(pivote!=null && pivote.getValor()!=0){
+				Nodo pivote = this.inicio;
+				while(pivote!=null && pivote.getValor()!=0){
+					
+					pivote = pivote.getDerecha();
+				}
 				
-				pivote = pivote.getDerecha();
+				this.ingresarDato(dato, pivote);
 			}
 			
-			this.ingresarDato(dato, pivote);
-		}
+			if(this.inicio.getArriba()!=null || this.inicio.getAbajo()!=null){
+				
+				this.completarNumero(dato);
+			}
 			
-		this.completarNumero(dato);
-		
+		}
 		this.recuperarFilaColumna(elEliminado);
-		
 	}
 }
 

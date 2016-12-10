@@ -97,7 +97,7 @@ public class GrillaTest {
 		
 		this.aux = this.grilla.eliminarFilaColumna(6);
 		this.grilla.recuperarFilaColumna(this.aux);
-		this.grilla.imprimirGrilla();
+		//this.grilla.imprimirGrilla();
 	}
 	
 	//Insertar numero
@@ -106,5 +106,7 @@ public class GrillaTest {
 		
 		this.ingresarDatosCeldas();
 		this.grilla.completarNumero(1);
+		
+		this.grilla.imprimirGrilla();
 	}
 }
