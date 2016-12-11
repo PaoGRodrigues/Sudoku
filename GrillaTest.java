@@ -51,7 +51,7 @@ public class GrillaTest {
 		this.grilla.ingresarDato(3, 0, 1);
 		this.grilla.ingresarDato(3, 3, 2);
 		
-		//this.grilla.imprimirGrilla();
+		//this.grilla.imprimir();
 	}
 	
 	//Eliminacion de celdas e impresion
@@ -60,12 +60,12 @@ public class GrillaTest {
 						
 		this.ingresarDatosCeldas();
 		
-		//this.grilla.imprimirGrilla();
+		//this.grilla.imprimir();
 		
 		this.aux = this.grilla.eliminarFilaColumna(1);
 		Assert.assertEquals(3, this.grilla.lengthColumna());
 		Assert.assertEquals(3, this.grilla.lengthFila());
-		//this.grilla.imprimirGrilla();
+		//this.grilla.imprimir();
 		System.out.println("....................");
 	}
 	
@@ -77,12 +77,12 @@ public class GrillaTest {
 		
 		this.aux = this.grilla.eliminarFilaColumna(3);
 		this.grilla.recuperarFilaColumna(this.aux);
-		//this.grilla.imprimirGrilla();
+		//this.grilla.imprimir();
 	}
 	
 	//Eliminacion y recuperacion
 	@Test
-	public void eliminarCeldasultimaFila(){
+	public void eliminarCeldasUltimaFila(){
 		
 		this.creacion();
 		
@@ -93,11 +93,11 @@ public class GrillaTest {
 		this.grilla.ingresarDato(2, 0, 2);
 		this.grilla.ingresarDato(2, 1, 3);
 		this.grilla.ingresarDato(3, 0, 1);
-		this.grilla.ingresarDato(3, 3, 6); //Comprobamos que elimina la ultima fila/columna
+		this.grilla.ingresarDato(3, 2, 6); //Comprobamos que elimina la ultima fila/columna
 		
 		this.aux = this.grilla.eliminarFilaColumna(6);
 		this.grilla.recuperarFilaColumna(this.aux);
-		//this.grilla.imprimirGrilla();
+		//this.grilla.imprimir();
 	}
 	
 	//Insertar numero
@@ -107,6 +107,39 @@ public class GrillaTest {
 		this.ingresarDatosCeldas();
 		this.grilla.completarNumero(1);
 		
-		this.grilla.imprimirGrilla();
+		//this.grilla.imprimir();
 	}
+	
+	//Prueba con matrices de 2 y 1 celda
+	@Test
+	public void matricesRaras(){
+		
+		this.grilla.crearSudoku(2, 2);
+		this.grilla.ingresarDato(0, 0, 2);
+		this.grilla.ingresarDato(0, 1, 1);
+		this.grilla.completarNumero(1);
+		this.grilla.completarNumero(2);
+		//this.grilla.imprimir();
+	}
+	
+	
+	@Test
+	public void recursividad2(){
+		
+		this.ingresarDatosCeldas();
+		this.grilla.completarNumero(1);
+		this.grilla.completarNumero(2);
+		this.grilla.imprimir();
+		this.grilla.completarNumero(3);
+		
+	}
+	
+	/**
+	//La final
+	@Test
+	public void solucionadorDefinitivo(){
+		
+		this.ingresarDatosCeldas();
+		this.grilla.resolver();
+	}*/
 }

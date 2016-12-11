@@ -171,10 +171,17 @@ public class Grilla {
 	//Ingresa dato. Usado por solucionador para ingresar dato en el nodo sin necesitar fila/columna
 	public void ingresarDato(int dato, Nodo unNodo){
 		
-		unNodo.setValor(dato);
+		//unNodo tiene que ser el nodo del principio de una fila.
+		Nodo pivote = unNodo;
+		while(pivote!=null && pivote.getValor()!=0){
+				
+			pivote = pivote.getDerecha();
+		}
+		
+		pivote.setValor(dato);
 	}
 	
-	public void imprimirGrilla(){
+	public void imprimir(){
 		
 		Nodo fila = this.inicio;
 		Nodo pivote = this.inicio;
@@ -221,6 +228,7 @@ public class Grilla {
 		}else if(pivote.getArriba()==null && pivote.getAbajo()!=null){
 			
 			pivote = pivote.getAbajo();
+			
 			this.inicio = pivote;
 			while(pivote!=null){
 				
@@ -239,7 +247,14 @@ public class Grilla {
 			}
 		}else if(pivote.getArriba()==null && pivote.getAbajo()==null){
 			
-			this.inicio = null;
+			if(pivote.getDerecha()!=null){
+				
+				this.inicio = pivote.getDerecha();
+				pivote.setDerecha(null);
+			}else{
+								
+				this.inicio = null;
+			}
 		}
 	}
 	
@@ -251,9 +266,9 @@ public class Grilla {
 		while(pivote!=null){
 			
 			if(pivote.getArriba()==null && pivote.getIzquierda()==null){
-				
 				this.inicio = pivote;
-				this.inicio.getDerecha().setIzquierda(this.inicio);
+				
+				//pivote.getDerecha().setIzquierda(this.inicio);
 				
 			}else if(pivote.getArriba()==null){
 				
@@ -295,6 +310,7 @@ public class Grilla {
 		
 		if(pivote.getIzquierda()!=null && pivote.getDerecha()!=null){
 			
+			pivote.getAbajo();
 			while(pivote!=null){
 				
 				pivote.getIzquierda().setDerecha(pivote.getDerecha());
@@ -306,16 +322,16 @@ public class Grilla {
 		}else if(pivote.getIzquierda()==null && pivote.getDerecha()!=null){
 			
 			pivote = pivote.getDerecha();
-			this.inicio = pivote.getAbajo();
+			this.inicio = this.inicio.getDerecha();
 			while(pivote!=null){
 				
 				pivote.setIzquierda(null);
 				pivote = pivote.getAbajo();
 			}
 		
-		}else if(pivote.getDerecha()==null && pivote.getIzquierda()!=null){
+		}else if(pivote.getDerecha()==null && pivote.getArriba()==null){
 			
-			pivote = pivote.getIzquierda();
+			pivote = pivote.getAbajo().getIzquierda();
 			
 			while(pivote!=null){
 				
@@ -333,9 +349,9 @@ public class Grilla {
 		while(pivote!=null){
 			
 			if(pivote.getIzquierda()==null && pivote.getArriba()==null){
-				
 				this.inicio = pivote;
-				this.inicio.getAbajo().setArriba(this.inicio);
+				
+				//pivote.getAbajo().setArriba(this.inicio);
 			
 			}else if(pivote.getIzquierda()==null){
 			
@@ -369,19 +385,18 @@ public class Grilla {
 	/*******************************************************************************************************************/
 
 	public boolean filaContieneDato (Nodo inicio, int dato){
-	
-		boolean contiene = false;
 		
-		while(inicio.getDerecha()!=null && !contiene){
+		int i = 0;
+		while(inicio.getDerecha()!=null){
 			
 			inicio = inicio.getDerecha();
 			if(inicio.getValor()==dato){
 				
-				contiene = true;
+				i = 1;
 			}
 		}
 		
-		return contiene;
+		return (i==1);
 	}
 	
 	public int cantidadNodosVacios(Nodo unNodo){
@@ -446,17 +461,26 @@ public class Grilla {
 		Nodo nodoColumna = this.volverArriba(unNodo);
 		this.recuperarColumna(nodoColumna);
 		this.recuperarFila(nodoFila);
+
 	}
 
 	//Recorre filas y columnas y completa con el dato sugerido.
 	public void completarNumero(int dato){
 		
-		Nodo elEliminado = this.eliminarFilaColumna(dato);
+		Nodo elEliminado = null;
+		
+		if(this.cantidadNodosVacios(this.inicio)==1 && !this.filaContieneDato(this.inicio, dato)){
 			
-		if(this.inicio != null){
+			this.ingresarDato(dato, this.inicio);
+		}
+						
 			
+		if(this.lengthColumna()!=1){
+				//---
+			elEliminado = this.eliminarFilaColumna(dato);
 			if(this.cantidadNodosVacios(this.inicio)==1){
-				
+					
+				//---
 				Nodo pivote = this.inicio;
 				while(pivote!=null && pivote.getValor()!=0){
 					
@@ -464,15 +488,34 @@ public class Grilla {
 				}
 				
 				this.ingresarDato(dato, pivote);
+					
 			}
-			
-			if(this.inicio.getArriba()!=null || this.inicio.getAbajo()!=null){
 				
+			if(this.inicio.getArriba()!=null || this.inicio.getAbajo()!=null){
+					
 				this.completarNumero(dato);
 			}
-			
+				
+			if(this.cantidadNodosVacios(this.inicio) ==1 && !this.filaContieneDato(this.inicio, dato)){
+					
+				this.ingresarDato(dato, this.inicio);
+			}
 		}
+		
+		if(this.cantidadNodosVacios(this.inicio)==1 && !this.filaContieneDato(this.inicio, dato)){
+			
+			this.ingresarDato(dato, this.inicio);
+		}
+		
 		this.recuperarFilaColumna(elEliminado);
+	}
+
+	public void resolver(){
+
+		for(int i=1; i<this.lengthFila(); i++){
+			
+			this.completarNumero(i);
+		}
 	}
 }
 
