@@ -24,7 +24,7 @@ public class Grilla {
 	public void crearSudoku(int filas, int columnas){
 		
 		this.inicio = new Nodo();
-		
+		this.tam = filas;
 		Nodo actual = this.inicio;
 		
 		//se crea el primer nodo de cada fila.
@@ -212,10 +212,84 @@ public class Grilla {
 		
 		Nodo pivote = nodo;
 		
-		//El pivote esta al principio de la fila.
-		//pivote = this.volverAlInicio(pivote); Este metodo pasa al eliminarFilaColumna
-		
-		if(pivote.getArriba()!=null && pivote.getAbajo()!=null){
+		if(pivote.getArriba()==null){
+			
+			//esquina Arriba-Derecha
+			if(pivote.getDerecha()==null){
+				
+				pivote = pivote.getAbajo().getIzquierda();
+				this.inicio = this.inicio.getAbajo();
+				
+				while(pivote!=null){
+					
+					pivote.setArriba(null);
+					pivote = pivote.getIzquierda();
+				}
+				
+			}else if(pivote.getIzquierda()==null){
+				
+				//esquina Arriba-Izquierda
+				pivote = pivote.getAbajo().getDerecha();
+				this.inicio = pivote;
+				
+				while(pivote!=null){
+					
+					pivote.setArriba(null);
+					pivote = pivote.getDerecha();
+				}
+			
+			}else{
+				
+				//borde arriba
+				pivote = this.volverAlInicio(pivote.getAbajo());
+				this.inicio = pivote; 
+				
+				while(pivote!=null){
+					
+					pivote.setArriba(null);
+					pivote = pivote.getDerecha();
+				}
+			}
+				
+		}else if(pivote.getAbajo()==null){
+			
+			//esquina Abajo-Derecha
+			if(pivote.getDerecha()==null){
+				
+				pivote = pivote.getArriba().getIzquierda();
+				
+				while(pivote!=null){
+					
+					pivote.setAbajo(null);
+					pivote = pivote.getIzquierda();
+				}
+				
+			}else if(pivote.getIzquierda()==null){
+				
+				//esquina Abajo-Izquierda
+				pivote = pivote.getArriba().getDerecha();
+				while(pivote!=null){
+					
+					pivote.setArriba(null);
+					pivote = pivote.getDerecha();
+				}
+			
+			}else{
+				
+				//borde abajo
+				pivote = pivote.getArriba();
+				
+				while(pivote!=null){
+					
+					pivote.setAbajo(null);
+					pivote = pivote.getDerecha();
+				}				
+			}
+			
+		}else if(pivote.getIzquierda()==null){
+			
+			//borde Izquierda y centro
+			pivote = this.volverAlInicio(pivote);
 			
 			while(pivote!=null){
 				
@@ -223,37 +297,29 @@ public class Grilla {
 				pivote.getAbajo().setArriba(pivote.getArriba());
 				
 				pivote = pivote.getDerecha();
-			}			
-		
-		}else if(pivote.getArriba()==null && pivote.getAbajo()!=null){
-			
-			pivote = pivote.getAbajo();
-			
-			this.inicio = pivote;
-			while(pivote!=null){
-				
-				pivote.setArriba(null);
-				pivote = pivote.getDerecha();
 			}
 		
-		}else if(pivote.getAbajo()==null && pivote.getArriba()!=null){
+		}else if(pivote.getDerecha()==null){
 			
-			pivote = pivote.getArriba();
+			//borde Derecha
+			while(pivote!=null){
+				
+				pivote.getArriba().setAbajo(pivote.getAbajo());
+				pivote.getAbajo().setArriba(pivote.getArriba());
+				
+				pivote = pivote.getIzquierda();
+			}
+			
+		}else{
+			
+			pivote = this.volverAlInicio(pivote);
 			
 			while(pivote!=null){
 				
-				pivote.setAbajo(null);
-				pivote = pivote.getDerecha();
-			}
-		}else if(pivote.getArriba()==null && pivote.getAbajo()==null){
-			
-			if(pivote.getDerecha()!=null){
+				pivote.getArriba().setAbajo(pivote.getAbajo());
+				pivote.getAbajo().setArriba(pivote.getArriba());
 				
-				this.inicio = pivote.getDerecha();
-				pivote.setDerecha(null);
-			}else{
-								
-				this.inicio = null;
+				pivote = pivote.getDerecha();
 			}
 		}
 	}
@@ -261,14 +327,13 @@ public class Grilla {
 	//Recuperar Nodos de la Fila
 	public void recuperarFila(Nodo nodo){
 		
-		Nodo pivote = nodo;
+		Nodo pivote = this.volverAlInicio(nodo);
 		
 		while(pivote!=null){
 			
-			if(pivote.getArriba()==null && pivote.getIzquierda()==null){
+			if(pivote.getArriba()==null&&pivote.getIzquierda()==null){
 				this.inicio = pivote;
-				
-				//pivote.getDerecha().setIzquierda(this.inicio);
+				pivote.getAbajo().setArriba(pivote);
 				
 			}else if(pivote.getArriba()==null){
 				
@@ -277,7 +342,6 @@ public class Grilla {
 			}else if(pivote.getAbajo()==null){
 				
 				pivote.getArriba().setAbajo(pivote);
-				
 			}else{
 				
 				pivote.getArriba().setAbajo(pivote);
@@ -305,38 +369,108 @@ public class Grilla {
 		
 		Nodo pivote = nodo;
 		
-		//El pivote esta al principio de la columna.
-		//pivote = this.volverArriba(pivote);
-		
-		if(pivote.getIzquierda()!=null && pivote.getDerecha()!=null){
+		if(pivote.getArriba()==null){
 			
-			pivote.getAbajo();
-			while(pivote!=null){
-				
-				pivote.getIzquierda().setDerecha(pivote.getDerecha());
-				pivote.getDerecha().setIzquierda(pivote.getIzquierda());
+			//esquina Arriba-Derecha
+			if(pivote.getDerecha()==null){
 				
 				pivote = pivote.getAbajo();
-			}			
-		
-		}else if(pivote.getIzquierda()==null && pivote.getDerecha()!=null){
+				
+				while(pivote!=null){
+					
+					pivote.getIzquierda().setDerecha(null);
+					pivote = pivote.getAbajo();
+				}
+				
+			}else if(pivote.getIzquierda()==null){
+				
+				//esquina Arriba-Izquierda
+				pivote = this.inicio;
+				
+				while(pivote!=null){
+					
+					pivote.setIzquierda(null);
+					pivote = pivote.getAbajo();
+				}
+				
+			}else{
+				
+				//borde arriba
+				pivote = pivote.getAbajo();
+				while(pivote!=null){
+				
+					pivote.getIzquierda().setDerecha(pivote.getDerecha());
+					pivote.getDerecha().setIzquierda(pivote.getIzquierda());
+					pivote = pivote.getAbajo();
+				}
+			}
+				
+		}else if(pivote.getAbajo()==null){
 			
+			//esquina Abajo-Derecha
+			if(pivote.getDerecha()==null){
+				
+				pivote = this.volverArriba(pivote);
+				while(pivote!=null){
+					
+					pivote.setDerecha(null);
+					pivote = pivote.getAbajo();
+				}
+				
+			}else if(pivote.getIzquierda()==null){
+				
+				//esquina Abajo-Izquierda
+				pivote = this.volverArriba(pivote);
+				pivote = pivote.getDerecha().getAbajo();
+				this.inicio = pivote;
+				
+				while(pivote!=null){
+					
+					pivote.setIzquierda(null);
+					pivote = pivote.getAbajo();
+				}
+			
+			}else{
+				
+				//borde abajo
+				pivote = this.volverArriba(pivote);
+				pivote.getIzquierda().setDerecha(pivote.getDerecha());
+				pivote.getDerecha().setIzquierda(pivote.getIzquierda());
+				pivote = pivote.getAbajo();
+			}
+			
+		}else if(pivote.getIzquierda()==null){
+			
+			//borde Izquierda
+			pivote = this.volverArriba(pivote);
 			pivote = pivote.getDerecha();
-			this.inicio = this.inicio.getDerecha();
+			this.inicio = pivote;
+			
 			while(pivote!=null){
 				
 				pivote.setIzquierda(null);
 				pivote = pivote.getAbajo();
 			}
-		
-		}else if(pivote.getDerecha()==null && pivote.getArriba()==null){
 			
-			pivote = pivote.getAbajo().getIzquierda();
+		}else if(pivote.getDerecha()==null){
 			
+			//borde Derecha
+			pivote = this.volverArriba(pivote);
+			pivote = pivote.getIzquierda();
 			while(pivote!=null){
 				
 				pivote.setDerecha(null);
 				pivote = pivote.getAbajo();
+			}
+			
+		}else{
+			
+			pivote = this.volverArriba(pivote);
+			while(pivote!=null){
+				
+				pivote.getIzquierda().setDerecha(pivote.getDerecha());
+				pivote.getDerecha().setIzquierda(pivote.getIzquierda());
+				pivote = pivote.getAbajo();				
 			}
 		}
 	}
@@ -446,10 +580,8 @@ public class Grilla {
 		Nodo nodoDato = this.buscarDato(dato);
 		if(nodoDato !=null){
 			
-			Nodo nodoFila = this.volverAlInicio(nodoDato);
-			Nodo nodoColumna = this.volverArriba(nodoDato);
-			this.eliminarFila(nodoFila);
-			this.eliminarColumna(nodoColumna);			
+			this.eliminarFila(nodoDato);
+			this.eliminarColumna(nodoDato);			
 		}
 		return nodoDato;
 	}
@@ -512,7 +644,7 @@ public class Grilla {
 
 	public void resolver(){
 
-		for(int i=1; i<this.lengthFila(); i++){
+		for(int i=1; i<this.lengthFila()+1; i++){
 			
 			this.completarNumero(i);
 		}

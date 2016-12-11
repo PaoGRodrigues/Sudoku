@@ -74,7 +74,7 @@ public class GrillaTest {
 	public void eliminarCeldasFila1(){
 		
 		this.ingresarDatosCeldas();
-		
+		//this.grilla.imprimir();
 		this.aux = this.grilla.eliminarFilaColumna(3);
 		this.grilla.recuperarFilaColumna(this.aux);
 		//this.grilla.imprimir();
@@ -99,6 +99,7 @@ public class GrillaTest {
 		this.grilla.recuperarFilaColumna(this.aux);
 		//this.grilla.imprimir();
 	}
+	
 	
 	//Insertar numero
 	@Test
@@ -129,17 +130,19 @@ public class GrillaTest {
 		this.ingresarDatosCeldas();
 		this.grilla.completarNumero(1);
 		this.grilla.completarNumero(2);
-		this.grilla.imprimir();
 		this.grilla.completarNumero(3);
+		this.grilla.completarNumero(4);
+		//this.grilla.imprimir();
 		
 	}
 	
-	/**
 	//La final
 	@Test
 	public void solucionadorDefinitivo(){
 		
 		this.ingresarDatosCeldas();
+		Assert.assertEquals(4, this.grilla.lengthFila());
 		this.grilla.resolver();
-	}*/
+		this.grilla.imprimir();
+	}
 }
