@@ -454,9 +454,13 @@ public class Grilla {
 				
 				//borde abajo
 				pivote = this.volverArriba(pivote);
-				pivote.getIzquierda().setDerecha(pivote.getDerecha());
-				pivote.getDerecha().setIzquierda(pivote.getIzquierda());
-				pivote = pivote.getAbajo();
+				while(pivote!=null){
+					
+					pivote.getIzquierda().setDerecha(pivote.getDerecha());
+					pivote.getDerecha().setIzquierda(pivote.getIzquierda());
+					pivote = pivote.getAbajo();
+				}
+					
 			}
 			
 		}else if(pivote.getIzquierda()==null){
@@ -679,9 +683,9 @@ public class Grilla {
 	public Nodo evaluarSiHayVacios(Nodo inicio){
 		
 		Nodo pivote = inicio;
-		while(this.cantidadNodosVacios(pivote)!=1 && pivote!=null){
+		while(pivote!=null && this.cantidadNodosVacios(pivote)!=1){
 			
-			pivote = inicio.getAbajo();
+			pivote = pivote.getAbajo();
 		}
 		
 		if(pivote!=null){
@@ -710,9 +714,12 @@ public class Grilla {
 			
 			if(this.cantidadNodosVacios(pivote)==0){
 				
-				pivote = pivote.getAbajo();				
-			}else{
+				pivote = pivote.getAbajo();
 				
+			}else{
+
+				//resuelve del 1al9 en la primer pasada. Como no esta resuelto todo, vuelve
+				//a arrancar... Frena en el 3/4
 				this.resolver();
 			}
 		}

@@ -252,6 +252,67 @@ public class GrillaTest {
 		this.grilla2.ingresarDato(8,8,6);
 		
 		this.grilla2.resolver();
+		//this.grilla2.imprimir();
+	}
+
+	@Test
+	public void solucionar9x9num2(){
+		
+		Assert.assertEquals(9, this.grilla2.lengthFila());
+		Assert.assertEquals(9, this.grilla2.lengthColumna());
+		
+		this.grilla2.ingresarDato(0,1,1);
+		this.grilla2.ingresarDato(0,2,3);
+		this.grilla2.ingresarDato(0,4,9);
+		this.grilla2.ingresarDato(0,5,4);
+		this.grilla2.ingresarDato(0,8,8);
+		
+		this.grilla2.ingresarDato(1,0,9);
+		this.grilla2.ingresarDato(1,3,8);
+		this.grilla2.ingresarDato(1,5,2);
+		this.grilla2.ingresarDato(1,6,7);
+		this.grilla2.ingresarDato(1,8,4);
+		
+		this.grilla2.ingresarDato(2,2,8);
+		this.grilla2.ingresarDato(2,4,5);
+		this.grilla2.ingresarDato(2,7,2);
+		this.grilla2.ingresarDato(2,8,1);
+		
+		this.grilla2.ingresarDato(3,0,5);
+		this.grilla2.ingresarDato(3,1,2);
+		this.grilla2.ingresarDato(3,3,1);
+		this.grilla2.ingresarDato(3,4,7);
+		this.grilla2.ingresarDato(3,6,8);
+		this.grilla2.ingresarDato(3,8,3);
+		
+		this.grilla2.ingresarDato(4,1,8);
+		this.grilla2.ingresarDato(4,2,4);
+		this.grilla2.ingresarDato(4,5,5);
+		this.grilla2.ingresarDato(4,6,1);
+		this.grilla2.ingresarDato(4,8,9);
+		
+		this.grilla2.ingresarDato(5,2,7);
+		this.grilla2.ingresarDato(5,3,4);
+		this.grilla2.ingresarDato(5,4,8);
+		this.grilla2.ingresarDato(5,7,6);
+		
+		this.grilla2.ingresarDato(6,0,8);
+		this.grilla2.ingresarDato(6,1,5);
+		this.grilla2.ingresarDato(6,5,7);
+		this.grilla2.ingresarDato(6,7,9);
+		this.grilla2.ingresarDato(6,8,2);
+		
+		this.grilla2.ingresarDato(7,4,4);
+		this.grilla2.ingresarDato(7,6,5);
+		
+		this.grilla2.ingresarDato(8,1,7);
+		this.grilla2.ingresarDato(8,2,9);
+		this.grilla2.ingresarDato(8,3,5);
+		this.grilla2.ingresarDato(8,5,8);
+		this.grilla2.ingresarDato(8,6,3);
+		this.grilla2.ingresarDato(8,8,6);
+		
+		this.grilla2.resolver();
 		this.grilla2.imprimir();
 	}
 }
