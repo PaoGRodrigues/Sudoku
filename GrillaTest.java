@@ -252,5 +252,6 @@ public class GrillaTest {
 		this.grilla2.ingresarDato(8,8,6);
 		
 		this.grilla2.resolver();
+		this.grilla2.imprimir();
 	}
 }
