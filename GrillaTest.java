@@ -6,7 +6,8 @@ import org.junit.Test;
 
 public class GrillaTest {
 
-	Grilla grilla = new Grilla();
+	Grilla grilla = new Grilla(4,4);
+	Grilla grilla2 = new Grilla(9,9);
 	Nodo aux = null;
 	
 	//Creacion
@@ -14,6 +15,7 @@ public class GrillaTest {
 	public void creacion() {
 		
 		this.grilla.crearSudoku(4, 4);
+		this.grilla2.crearSudoku(9, 9);
 	}
 
 	//Size filas/columnas
@@ -123,6 +125,39 @@ public class GrillaTest {
 		//this.grilla.imprimir();
 	}
 	
+	//Prueba con matrices de 2 y 1 celda
+	@Test
+	public void matricesRaras2(){
+			
+		this.grilla.crearSudoku(2, 2);
+		this.grilla.ingresarDato(1, 0, 2);
+		this.grilla.ingresarDato(1, 1, 1);
+		this.grilla.completarNumero(1);
+		this.grilla.completarNumero(2);
+		//this.grilla.imprimir();
+	}
+	
+	@Test
+	public void matricesRaras3(){
+			
+		this.grilla.crearSudoku(2, 2);
+		this.grilla.ingresarDato(0, 0, 2);
+		this.grilla.ingresarDato(1, 1, 2);
+		this.grilla.completarNumero(1);
+		this.grilla.completarNumero(2);
+		//this.grilla.imprimir();
+	}
+	
+	@Test
+	public void matricesRaras4(){
+			
+		this.grilla.crearSudoku(2, 2);
+		this.grilla.ingresarDato(0, 1, 2);
+		this.grilla.ingresarDato(1, 0, 2);
+		this.grilla.completarNumero(1);
+		this.grilla.completarNumero(2);
+		//this.grilla.imprimir();
+	}
 	
 	@Test
 	public void recursividad2(){
@@ -143,6 +178,79 @@ public class GrillaTest {
 		this.ingresarDatosCeldas();
 		Assert.assertEquals(4, this.grilla.lengthFila());
 		this.grilla.resolver();
-		this.grilla.imprimir();
+		//this.grilla.imprimir();
+	}
+	
+	//Con un 9x9
+	@Test
+	public void solucionar9x9(){
+		
+		Assert.assertEquals(9, this.grilla2.lengthFila());
+		Assert.assertEquals(9, this.grilla2.lengthColumna());
+		
+		this.grilla2.ingresarDato(0,1,9);
+		this.grilla2.ingresarDato(0,2,4);
+		this.grilla2.ingresarDato(0,3,7);
+		this.grilla2.ingresarDato(0,4,8);
+		this.grilla2.ingresarDato(0,6,5);
+		this.grilla2.ingresarDato(0,7,3);
+		this.grilla2.ingresarDato(0,8,1);
+		
+		this.grilla2.ingresarDato(1,0,2);
+		this.grilla2.ingresarDato(1,4,1);
+		this.grilla2.ingresarDato(1,5,3);
+		this.grilla2.ingresarDato(1,8,9);
+		
+		this.grilla2.ingresarDato(2,0,5);
+		this.grilla2.ingresarDato(2,1,1);
+		this.grilla2.ingresarDato(2,3,4);
+		this.grilla2.ingresarDato(2,5,9);
+		this.grilla2.ingresarDato(2,6,2);
+		this.grilla2.ingresarDato(2,7,8);
+		
+		this.grilla2.ingresarDato(3,0,4);
+		this.grilla2.ingresarDato(3,2,1);
+		this.grilla2.ingresarDato(3,3,2);
+		this.grilla2.ingresarDato(3,4,5);
+		this.grilla2.ingresarDato(3,6,9);
+		this.grilla2.ingresarDato(3,7,7);
+		this.grilla2.ingresarDato(3,8,3);
+		
+		this.grilla2.ingresarDato(4,0,9);
+		this.grilla2.ingresarDato(4,1,8);
+		this.grilla2.ingresarDato(4,3,3);
+		this.grilla2.ingresarDato(4,5,6);
+		this.grilla2.ingresarDato(4,7,2);
+		this.grilla2.ingresarDato(4,8,5);
+		
+		this.grilla2.ingresarDato(5,1,5);
+		this.grilla2.ingresarDato(5,2,2);
+		this.grilla2.ingresarDato(5,4,9);
+		this.grilla2.ingresarDato(5,5,7);
+		this.grilla2.ingresarDato(5,6,4);
+		this.grilla2.ingresarDato(5,8,8);
+		
+		this.grilla2.ingresarDato(6,0,8);
+		this.grilla2.ingresarDato(6,1,2);
+		this.grilla2.ingresarDato(6,3,9);
+		this.grilla2.ingresarDato(6,5,5);
+		this.grilla2.ingresarDato(6,7,1);
+		this.grilla2.ingresarDato(6,8,4);
+		
+		this.grilla2.ingresarDato(7,1,4);
+		this.grilla2.ingresarDato(7,2,9);
+		this.grilla2.ingresarDato(7,4,3);
+		this.grilla2.ingresarDato(7,5,1);
+		this.grilla2.ingresarDato(7,6,8);
+		
+		this.grilla2.ingresarDato(8,1,3);
+		this.grilla2.ingresarDato(8,2,5);
+		this.grilla2.ingresarDato(8,3,8);
+		this.grilla2.ingresarDato(8,5,4);
+		this.grilla2.ingresarDato(8,6,7);
+		this.grilla2.ingresarDato(8,7,9);
+		this.grilla2.ingresarDato(8,8,6);
+		
+		this.grilla2.resolver();
 	}
 }

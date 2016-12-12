@@ -5,14 +5,14 @@ public class Grilla {
 	int tam;
 	Nodo inicio;
 	
-	public Grilla(){
+	public Grilla(int filas, int columnas){
 		
 		//this.tam = tam;
 		
 		//INICIO es el nodo de las coordenadas (1,1)
 		this.inicio = null;
 		
-		this.crearSudoku(4,4);
+		this.crearSudoku(filas,columnas);
 	}
 	
 	public Nodo getInicio(){
@@ -84,6 +84,24 @@ public class Grilla {
 		}
 			
 		return i;
+	}
+	
+	//Lleno
+	public boolean sudokuLleno(){
+		
+		Nodo pivote = this.inicio;
+		int i = 0;
+		while(pivote!=null){
+			
+			if(this.cantidadNodosVacios(pivote)!=0){
+				
+				i++;
+			}
+			
+			pivote = pivote.getAbajo();
+		}
+		
+		return (i==0);
 	}
 	
 	/*******************************************************************************************************************/
@@ -268,9 +286,10 @@ public class Grilla {
 				
 				//esquina Abajo-Izquierda
 				pivote = pivote.getArriba().getDerecha();
+				this.inicio = pivote;
 				while(pivote!=null){
 					
-					pivote.setArriba(null);
+					pivote.setAbajo(null);
 					pivote = pivote.getDerecha();
 				}
 			
@@ -410,7 +429,7 @@ public class Grilla {
 			//esquina Abajo-Derecha
 			if(pivote.getDerecha()==null){
 				
-				pivote = this.volverArriba(pivote);
+				pivote = this.volverArriba(pivote).getIzquierda();
 				while(pivote!=null){
 					
 					pivote.setDerecha(null);
@@ -421,7 +440,7 @@ public class Grilla {
 				
 				//esquina Abajo-Izquierda
 				pivote = this.volverArriba(pivote);
-				pivote = pivote.getDerecha().getAbajo();
+				pivote = pivote.getDerecha();
 				this.inicio = pivote;
 				
 				while(pivote!=null){
@@ -485,6 +504,8 @@ public class Grilla {
 			if(pivote.getIzquierda()==null && pivote.getArriba()==null){
 				this.inicio = pivote;
 				
+				Nodo pivote2 = pivote.getDerecha();
+				pivote2.setIzquierda(this.inicio);
 				//pivote.getAbajo().setArriba(this.inicio);
 			
 			}else if(pivote.getIzquierda()==null){
@@ -523,11 +544,11 @@ public class Grilla {
 		int i = 0;
 		while(inicio.getDerecha()!=null){
 			
-			inicio = inicio.getDerecha();
 			if(inicio.getValor()==dato){
 				
 				i = 1;
 			}
+			inicio = inicio.getDerecha();
 		}
 		
 		return (i==1);
@@ -606,11 +627,10 @@ public class Grilla {
 			this.ingresarDato(dato, this.inicio);
 		}
 						
-			
 		if(this.lengthColumna()!=1){
 				//---
 			elEliminado = this.eliminarFilaColumna(dato);
-			if(this.cantidadNodosVacios(this.inicio)==1){
+			if(this.cantidadNodosVacios(this.inicio)==1&&!this.filaContieneDato(this.inicio, dato)){
 					
 				//---
 				Nodo pivote = this.inicio;
@@ -620,24 +640,38 @@ public class Grilla {
 				}
 				
 				this.ingresarDato(dato, pivote);
+			
+			}else if(this.cantidadNodosVacios(this.inicio)==2 && this.lengthColumna()==2){
+				
+				Nodo pivote2 = this.inicio;
+				pivote2 = pivote2.getAbajo();
+				
+				if(pivote2.getValor()==0){
 					
+					this.ingresarDato(dato, pivote2);
+				
+				}else{
+					
+					this.ingresarDato(dato, pivote2.getDerecha());
+				}
+			
 			}
 				
 			if(this.inicio.getArriba()!=null || this.inicio.getAbajo()!=null){
 					
 				this.completarNumero(dato);
 			}
-				
+			/**	
 			if(this.cantidadNodosVacios(this.inicio) ==1 && !this.filaContieneDato(this.inicio, dato)){
 					
 				this.ingresarDato(dato, this.inicio);
-			}
+			}*/
 		}
-		
+		/**
 		if(this.cantidadNodosVacios(this.inicio)==1 && !this.filaContieneDato(this.inicio, dato)){
 			
 			this.ingresarDato(dato, this.inicio);
-		}
+		}*/
 		
 		this.recuperarFilaColumna(elEliminado);
 	}
@@ -646,7 +680,23 @@ public class Grilla {
 
 		for(int i=1; i<this.lengthFila()+1; i++){
 			
-			this.completarNumero(i);
+			if(!this.sudokuLleno()){
+				
+				this.completarNumero(i);				
+			}
+			//System.out.println(i);
+		}
+		
+		Nodo pivote = this.inicio;
+		while(pivote!=null){
+			
+			if(this.cantidadNodosVacios(pivote)==0){
+				
+				pivote = pivote.getAbajo();				
+			}else{
+				
+				this.resolver();
+			}
 		}
 	}
 }
