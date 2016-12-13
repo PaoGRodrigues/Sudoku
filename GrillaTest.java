@@ -177,7 +177,7 @@ public class GrillaTest {
 		
 		this.ingresarDatosCeldas();
 		Assert.assertEquals(4, this.grilla.lengthFila());
-		this.grilla.resolver();
+		//this.grilla.resolver();
 		//this.grilla.imprimir();
 	}
 	

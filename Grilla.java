@@ -4,6 +4,7 @@ public class Grilla {
 
 	int tam;
 	Nodo inicio;
+	int cantidadEjecuciones = 0;
 	
 	public Grilla(int filas, int columnas){
 		
@@ -547,7 +548,7 @@ public class Grilla {
 	public boolean filaContieneDato (Nodo inicio, int dato){
 		
 		int i = 0;
-		while(inicio.getDerecha()!=null){
+		while(inicio!=null){
 			
 			if(inicio.getValor()==dato){
 				
@@ -637,7 +638,7 @@ public class Grilla {
 				
 			elEliminado = this.eliminarFilaColumna(dato);
 					
-			if(this.cantidadNodosVacios(this.inicio)==1&&!this.filaContieneDato(this.inicio, dato)){
+			if(this.cantidadNodosVacios(this.inicio)==1 && !this.filaContieneDato(this.inicio, dato)){
 					
 					//---
 				Nodo pivote = this.inicio;
@@ -655,13 +656,18 @@ public class Grilla {
 				
 				if(pivote2.getValor()==0){
 					
-					this.ingresarDato(dato, pivote2);
+					if(!this.filaContieneDato(this.volverAlInicio(pivote2), dato)){
+						
+						this.ingresarDato(dato, pivote2);
+					}
 					
-				}else{
-					
-					this.ingresarDato(dato, pivote2.getDerecha());
+				}else if(pivote2.getDerecha().getValor()==0){
+
+					if(!this.filaContieneDato(this.volverAlInicio(pivote2), dato)){
+						
+						this.ingresarDato(dato, pivote2.getDerecha());
+					}
 				}
-				
 			}
 				
 			if(this.buscarDato(dato)!=null){
@@ -673,10 +679,17 @@ public class Grilla {
 			
 			}else if(this.evaluarSiHayVacios(this.inicio)!=null){
 				
-				this.ingresarDato(dato, this.evaluarSiHayVacios(this.inicio));
+				Nodo pivote2 = this.evaluarSiHayVacios(this.inicio);
+				
+				if(!this.filaContieneDato(pivote2, dato)){
+					
+					this.ingresarDato(dato, pivote2);
+				}
+				
 				this.completarNumero(dato);
 			}
 		}
+		
 		this.recuperarFilaColumna(elEliminado);
 	}
 
@@ -705,24 +718,31 @@ public class Grilla {
 			
 			if(!this.sudokuLleno()){
 				
-				this.completarNumero(i);				
+				this.completarNumero(i);
 			}
 		}
 		
 		Nodo pivote = this.inicio;
-		while(pivote!=null){
-			
-			if(this.cantidadNodosVacios(pivote)==0){
+		this.cantidadEjecuciones++;
+		
+			if(this.cantidadEjecuciones==15 || this.sudokuLleno()){
+					
+				Nodo pivote3 = this.inicio;
+				int cantidadVacios = 0;
+				while(pivote3!=null){
+					
+					cantidadVacios = cantidadVacios + this.cantidadNodosVacios(pivote3);
+					pivote3 = pivote3.getAbajo();
+				}
 				
-				pivote = pivote.getAbajo();
-				
+				System.out.println(cantidadVacios);
+					
 			}else{
-
-				//resuelve del 1al9 en la primer pasada. Como no esta resuelto todo, vuelve
-				//a arrancar... Frena en el 3/4
+					
 				this.resolver();
+				
 			}
-		}
+			
 	}
 }
 
