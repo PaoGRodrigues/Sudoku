@@ -1,4 +1,7 @@
 package Round2;
+
+import javax.swing.JTextField;
+
 /**
  * Nodo
  */
@@ -10,8 +13,12 @@ public class Nodo {
 	Nodo arriba;
 	Nodo abajo;
 	
+	//interfaz
+	JTextField casilla;
+	
 	public Nodo (){
 		
+		this.casilla = new JTextField();
 		this.setValor(0);
 		this.setDerecha(null);
 		this.setIzquierda(null);
@@ -25,6 +32,7 @@ public class Nodo {
 	}
 	public void setValor(int valor) {
 		this.valor = valor;
+		this.casilla.setText(Integer.toString(valor));
 	}
 	public Nodo getDerecha() {
 		return derecha;
@@ -51,4 +59,12 @@ public class Nodo {
 		this.abajo = abajo;
 	}
 	
+	public JTextField getCasilla(){
+		return this.casilla;
+	}
+	
+	public void setOnlyValor(int valor){
+		
+		this.valor = valor;
+	}
 }
