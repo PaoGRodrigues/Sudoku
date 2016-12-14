@@ -23,7 +23,7 @@ public class Grilla2 extends JFrame implements ActionListener, KeyListener{
 	//Interfaz
 	private JPanel panel = (JPanel) this.getContentPane();
 	private JButton hacerAlgo;
-	private JLabel mostrarAlgo;
+	private JLabel mostrarAlgo, error;
 	private JTextArea instruccion;
 	private JTextField[][] matriz;
 	
@@ -80,14 +80,24 @@ public class Grilla2 extends JFrame implements ActionListener, KeyListener{
 			Nodo nuevo = new Nodo();
 			agregarFila(actual, nuevo);
 			//interfaz
-			nuevo.getCasilla().setBounds(new Rectangle((u+20)*20, (0+11)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
-			nuevo.getCasilla().addKeyListener(this);
-			panel.add(nuevo.getCasilla(),null);
-			matriz[u][0] = nuevo.getCasilla();
+			//nuevo.getCasilla().setBounds(new Rectangle((0+19)*20, (u+12)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+			//nuevo.getCasilla().addKeyListener(this);
+			//panel.add(nuevo.getCasilla(),null);
+			//matriz[0][u] = nuevo.getCasilla();
 			
 			actual = nuevo;
-		
 		}
+		
+		Nodo ahora = this.inicio.getAbajo();
+		for(int u = 1; u<filas-1; u++){
+			
+			ahora.getCasilla().setBounds(new Rectangle((0+19)*20, (u+11)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+			ahora.getCasilla().addKeyListener(this);
+			panel.add(ahora.getCasilla());
+			matriz[0][u] = ahora.getCasilla();
+			if(ahora.getAbajo()!=null) ahora = ahora.getAbajo();
+		}
+		
 		
 		actual = this.inicio;
 		Nodo primerNodo = this.inicio;
@@ -98,16 +108,34 @@ public class Grilla2 extends JFrame implements ActionListener, KeyListener{
 				
 				Nodo nuevo = new Nodo();
 				agregarNodo(primerNodo, nuevo);
-				nuevo.getCasilla().setBounds(new Rectangle((j+19)*20, (i+12)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
-				nuevo.getCasilla().addKeyListener(this);
-				panel.add(nuevo.getCasilla(),null);
-				matriz[j][i] = nuevo.getCasilla();
+				//nuevo.getCasilla().setBounds(new Rectangle((j+20)*20, (i+11)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+				//nuevo.getCasilla().addKeyListener(this);
+				//panel.add(nuevo.getCasilla(),null);
+				//matriz[j][i] = nuevo.getCasilla();
 				
 				primerNodo = nuevo;
 			}
 			
 			actual = actual.getAbajo();
 			primerNodo = actual;
+		}
+		
+		
+		Nodo pivote = this.inicio;
+		
+		for(int j = 0; j<filas; j++){
+			
+			for(int i = 0; i< columnas; i++){
+				
+				pivote.getCasilla().setBounds(new Rectangle((j+20)*20, (i+11)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+				pivote.getCasilla().addKeyListener(this);
+				panel.add(pivote.getCasilla(),null);
+				matriz[j][i] = pivote.getCasilla();
+				if(pivote.getDerecha()!=null) pivote = pivote.getDerecha();
+			}
+			
+			pivote = this.volverAlInicio(pivote);
+			if(pivote.getAbajo()!=null) pivote = pivote.getAbajo();
 		}
 		
 		this.conectarArribaAbajo();
@@ -121,6 +149,12 @@ public class Grilla2 extends JFrame implements ActionListener, KeyListener{
 		panel.add(hacerAlgo);
 		hacerAlgo.addActionListener(this);
 
+		//Error
+		error=new JLabel();			
+		error.setText("Se deben ingresar datos");
+		error.setBounds(30, 160, 370, 20);
+		error.setVisible(false);
+		panel.add(error);
 	}
 	
 	/*******************************************************************************************************************/
@@ -844,32 +878,43 @@ public class Grilla2 extends JFrame implements ActionListener, KeyListener{
 			
 			int i = 0;
 			int j = 0;
+			int valor = 0;
 			String text;
-			
-			
 			
 			while(pivote!=null){
 				
 				while(pivoteFila!=null){
 					
-					if(matriz[i][j].getText()!=null){
+					text = matriz[i][j].getText();
+					valor = Integer.parseInt(text);
+					
+					if(text!=null){
 						
-						//pivote.setOnlyValor(Integer.parseInt(matriz[i][j].getText()));						
-					}else{
-						
+						pivoteFila.setOnlyValor(valor);						
+					
+					}else{	
 						System.out.print("Entro en null");
 					}
 					
-					pivote = pivote.getDerecha();
+					System.out.println("I: " +i +","+"J: " + j);
+					System.out.println(text);
+					
+					pivoteFila = pivoteFila.getDerecha();
+					
 					j++;
 				}
 				
 				j=0;
-				pivote = pivote.getAbajo();
 				i++;
+				
+				pivote = pivote.getAbajo();
 			}
 				
+			this.imprimir();
 			this.resolver();
+		}else{
+			
+			error.setVisible(true);;
 		}
 	}
 }

@@ -82,6 +82,7 @@ public class Inicio extends JFrame implements ActionListener{
 		if(e.getSource()==comenzar){
 			//Deberia preguntar si lo quiero de 4x4 o 9x9
 			new Grilla2(9,9);
+			this.dispose();
 		}
 		if(e.getSource()==cancelar){
 			this.dispose();

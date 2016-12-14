@@ -1,14 +1,34 @@
 package Round2;
 
-public class Grilla {
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class Grilla extends JFrame implements ActionListener, KeyListener{
 
 	int tam;
 	Nodo inicio;
 	int cantidadEjecuciones = 0;
 	
+	//Interfaz
+	private JPanel panel = (JPanel) this.getContentPane();
+	private JButton hacerAlgo;
+	private JLabel mostrarAlgo;
+	private JTextArea instruccion;
+	
 	public Grilla(int filas, int columnas){
 		
-		//this.tam = tam;
+		this.tam = filas;
 		
 		//INICIO es el nodo de las coordenadas (0,0)
 		this.inicio = null;
@@ -21,7 +41,7 @@ public class Grilla {
 		return this.inicio;
 	}
 	
-	public int getSize(){
+	public int getTam(){
 		
 		return this.tam;
 	}
@@ -30,15 +50,38 @@ public class Grilla {
 	public void crearSudoku(int filas, int columnas){
 		
 		this.inicio = new Nodo();
+		//interfaz
+		this.inicio.getCasilla().setBounds(new Rectangle((0+19)*20, (0+11)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+		this.inicio.getCasilla().addKeyListener(this);
+		panel.add(this.inicio.getCasilla(),null);
+		
 		this.tam = filas;
 		Nodo actual = this.inicio;
+		
+		this.setTitle("Sudoki");
+		panel.setLayout(null); 
+		panel.setBackground(Color.ORANGE);
+		//Atributos de ventana
+			setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setSize(1024,740);
+			setResizable(true);
+			setLocation(150,0);
+			setName("Sudoku");
+			setVisible(true);
+
 		
 		//se crea el primer nodo de cada fila.
 		for(int u = 0; u<filas-1; u++){
 			
 			Nodo nuevo = new Nodo();
 			agregarFila(actual, nuevo);
+			//interfaz
+			nuevo.getCasilla().setBounds(new Rectangle((u+20)*20, (0+11)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+			nuevo.getCasilla().addKeyListener(this);
+			panel.add(nuevo.getCasilla(),null);
+			
 			actual = nuevo;
+		
 		}
 		
 		actual = this.inicio;
@@ -50,6 +93,10 @@ public class Grilla {
 				
 				Nodo nuevo = new Nodo();
 				agregarNodo(primerNodo, nuevo);
+				nuevo.getCasilla().setBounds(new Rectangle((j+19)*20, (i+12)*20, 25, 25)); //Rectangle (coord. x esquina sup izquierda, coord. y esquina inf izquierda, alto, ancho)
+				nuevo.getCasilla().addKeyListener(this);
+				panel.add(nuevo.getCasilla(),null);
+				
 				primerNodo = nuevo;
 			}
 			
@@ -58,6 +105,16 @@ public class Grilla {
 		}
 		
 		this.conectarArribaAbajo();
+		
+		//Interfaz
+		//Boton para hacer algo
+		hacerAlgo=new JButton("Resolver");
+		hacerAlgo.setLayout(null);
+		hacerAlgo.setMnemonic(KeyEvent.VK_H);
+		hacerAlgo.setBounds(415, 520, 120, 30);
+		panel.add(hacerAlgo);
+		hacerAlgo.addActionListener(this);
+
 	}
 	
 	/*******************************************************************************************************************/
@@ -750,6 +807,37 @@ public class Grilla {
 			this.resolver();
 				
 		}	
+	}
+
+
+	/*******************************************************************************************************************/
+	//Metodos heredados
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==this.hacerAlgo){
+			
+			String texto = this.hacerAlgo.getText();
+			this.ingresarDato(Integer.parseInt(texto), );
+		}
 	}
 }
 
