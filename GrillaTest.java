@@ -10,6 +10,8 @@ public class GrillaTest {
 	Grilla grilla2 = new Grilla(9,9);
 	Nodo aux = null;
 	
+	Verificador ver = new Verificador(this.grilla2);
+	
 	//Creacion
 	@Test
 	public void creacion() {
@@ -252,7 +254,7 @@ public class GrillaTest {
 		this.grilla2.ingresarDato(8,8,6);
 		
 		this.grilla2.resolver();
-		//this.grilla2.imprimir();
+		this.grilla2.imprimir();
 	}
 
 	@Test
@@ -314,5 +316,18 @@ public class GrillaTest {
 		
 		this.grilla2.resolver();
 		this.grilla2.imprimir();
+	}
+	
+	@Test
+	public void numerosRepetidos(){
+		
+		this.grilla2.ingresarDato(0, 0, 1);
+		this.grilla2.ingresarDato(0, 1, 1);
+		this.grilla2.ingresarDato(0, 7, 1);
+		this.grilla2.ingresarDato(3, 0, 1);
+		
+		this.ver.verificar(this.grilla2);
+		this.ver.imprimirCuadricula();
+		
 	}
 }

@@ -10,7 +10,7 @@ public class Grilla {
 		
 		//this.tam = tam;
 		
-		//INICIO es el nodo de las coordenadas (1,1)
+		//INICIO es el nodo de las coordenadas (0,0)
 		this.inicio = null;
 		
 		this.crearSudoku(filas,columnas);
@@ -19,6 +19,11 @@ public class Grilla {
 	public Nodo getInicio(){
 		
 		return this.inicio;
+	}
+	
+	public int getSize(){
+		
+		return this.tam;
 	}
 	
 	//Crea la grilla
@@ -211,11 +216,11 @@ public class Grilla {
 				
 				if(pivote!=null){
 					
-					System.out.println(pivote.getValor());
+					System.out.print(pivote.getValor() + " ");
 					pivote = pivote.getDerecha();
 				}
 			}
-			System.out.println("\n");
+			System.out.println("");
 			
 			if(fila!=null){
 				
@@ -545,6 +550,7 @@ public class Grilla {
 		
 	/*******************************************************************************************************************/
 
+	//Devuelve false si no se encuentra el dato.
 	public boolean filaContieneDato (Nodo inicio, int dato){
 		
 		int i = 0;
@@ -560,6 +566,7 @@ public class Grilla {
 		return (i==1);
 	}
 	
+	//Devuelve la cantidad de nodos vacios que hay en la fila.
 	public int cantidadNodosVacios(Nodo unNodo){
 		
 		unNodo = this.volverAlInicio(unNodo);
@@ -693,6 +700,7 @@ public class Grilla {
 		this.recuperarFilaColumna(elEliminado);
 	}
 
+	//Devuelve el primer nodo vacio de una fila.
 	public Nodo evaluarSiHayVacios(Nodo inicio){
 		
 		Nodo pivote = inicio;
@@ -712,6 +720,7 @@ public class Grilla {
 		return pivote;
 	}
 	
+	//Resuelve el sudoku ingresado. Se hardcodea a 15 ejecuciones como maximo.
 	public void resolver(){
 
 		for(int i=1; i<this.lengthFila()+1; i++){
@@ -722,27 +731,25 @@ public class Grilla {
 			}
 		}
 		
-		Nodo pivote = this.inicio;
 		this.cantidadEjecuciones++;
 		
-			if(this.cantidadEjecuciones==15 || this.sudokuLleno()){
+		if(this.cantidadEjecuciones==15 || this.sudokuLleno()){
 					
-				Nodo pivote3 = this.inicio;
-				int cantidadVacios = 0;
-				while(pivote3!=null){
+			Nodo pivote3 = this.inicio;
+			int cantidadVacios = 0;
+			while(pivote3!=null){
 					
-					cantidadVacios = cantidadVacios + this.cantidadNodosVacios(pivote3);
-					pivote3 = pivote3.getAbajo();
-				}
-				
-				System.out.println(cantidadVacios);
-					
-			}else{
-					
-				this.resolver();
-				
+				cantidadVacios = cantidadVacios + this.cantidadNodosVacios(pivote3);
+				pivote3 = pivote3.getAbajo();
 			}
-			
+				
+			System.out.println(cantidadVacios);
+					
+		}else{
+					
+			this.resolver();
+				
+		}	
 	}
 }
 
